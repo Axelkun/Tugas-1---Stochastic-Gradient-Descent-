@@ -1,2 +1,4 @@
 # Tugas-1---Stochastic-Gradient-Descent-
-Tugas 1
+kode dibuat oleh Axel
+NIM: 15/378056/PA/16531
+menggunakan aplikasi MATLAB
