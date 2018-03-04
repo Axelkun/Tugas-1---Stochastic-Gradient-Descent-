@@ -1,4 +1,5 @@
 clc
+% MATLAB code
 %    x1    x2    x3    x4   class
 x=[ 5.1   3.5   1.4   0.2     0;
     4.9   3.0   1.4   0.2     0;
@@ -108,7 +109,6 @@ Q3=input('masukan jumlah Q3: ');
 Q4=input('masukan jumlah Q4: ');
 b =input('masukan jumlah b : ');
 a =input('masukan jumlah a : ');
-loss=[];
 for i=1:1:length(x)
    TQ1=Q1;
    TQ2=Q2;
@@ -116,30 +116,24 @@ for i=1:1:length(x)
    TQ4=Q4;
    Tb =b;
    for count=1:1:n
-    h=(Q1*x(i,1))+(Q2*x(i,2))+(Q3*x(i,3))+(Q4*x(i,4))+b;
-    sigmoid = 1/(1+exp(-h));
-    error=(x(i,5)-sigmoid);
-    loss(i,count)=error^2;
-    dQ1=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,1);
-    dQ2=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,2);
-    dQ3=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,3);
-    dQ4=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,4);
-    db =2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*b;
-    Q1new= Q1+(a*dQ1);
-    Q2new= Q2+(a*dQ2);
-    Q3new= Q3+(a*dQ3);
-    Q4new= Q4+(a*dQ4);
-    bnew = b +(a*db);
-    Q1=Q1new;Q2=Q2new;Q3=Q3new;Q4=Q4new;
+        h=(TQ1*x(i,1))+(TQ2*x(i,2))+(TQ3*x(i,3))+(TQ4*x(i,4))+Tb;
+        sigmoid = 1/(1+exp(-h));
+        error=(x(i,5)-sigmoid);
+        loss(i,count)=error^2;
+        dQ1=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,1);
+        dQ2=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,2);
+        dQ3=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,3);
+        dQ4=2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*x(i,4);
+        db =2*(x(i,5)-sigmoid)*(1-sigmoid)*sigmoid*Tb;
+        Q1new= TQ1+(a*dQ1);
+        Q2new= TQ2+(a*dQ2);
+        Q3new= TQ3+(a*dQ3);
+        Q4new= TQ4+(a*dQ4);
+        bnew = Tb +(a*db);
+        TQ1=Q1new;TQ2=Q2new;TQ3=Q3new;TQ4=Q4new;
    end
-    Q1=TQ1;
-    Q2=TQ2;
-    Q3=TQ3;
-    Q4=TQ4;
-    b =Tb;
 end
-disp(loss);
-count=1:1:n;i=1:1:100;
+count=1:1:n;i=1:1:length(x);
 plot(count,loss(i,count));
 title('Loss Graph')
 xlabel('Epoch') 
