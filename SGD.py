@@ -17,22 +17,21 @@ def read_lines():
 x = list(read_lines())
       
 n= int(input('enter epoch: '))
-def q0():
+def tq0():
     return random.uniform(-1,1)
-def q1():
+def tq1():
     return random.uniform(-1,1)
-def q2():
+def tq2():
     return random.uniform(-1,1)
-def q3():
+def tq3():
     return random.uniform(-1,1)
-def b():
+def tb():
     return random.uniform(-1,1)
 a= float(input('enter alpha: '))
-ls=[[0.1]*n]*len(x)
 def ha(tq0,tq1,tq2,tq3,tb,i):
     return (tq0*x[i][0])+(tq1*x[i][1])+(tq2*x[i][2])+(tq3*x[i][3])+tb
 def sigmoid(h):
-    return 1/(1+np.exp(-h))
+    return 1.0/(1+np.exp(-h))
 def error(i,s):
     return x[i][4]-s
 def loss(e):
@@ -47,37 +46,28 @@ def deltaq3(i,s):
     return 2*(x[i][4]-s)*(1-s)*s*x[i][3]
 def deltab(i,s):
     return 2*(x[i][4]-s)*(1-s)*s*1
-def newq0(tq0,a,dq0):
-    return tq0+(a*dq0)
-def newq1(tq1,a,dq1):
-    return tq1+(a*dq1)
-def newq2(tq2,a,dq2):
-    return tq2+(a*dq2)
-def newq3(tq3,a,dq3):
-    return tq3+(a*dq3)
+def newq(numb,a,theta):
+    return numb+(a*theta)
 def newb(tb,a,db):
     return tb+(a*db)
-for i in range(0, len(x)):
-    tq0=q0();tq1=q1();tq2=q2();tq3=q3();tb=b()
-    for j in range (0,n):
-        h=ha(tq0,tq1,tq2,tq3,tb,i)
+q0=tq0();q1=tq1();q2=tq2();q3=tq3();b=tb()
+    #q0=0.2;q1=0.2;q2=0.2;q3=0.2;b=0.2
+err=[]
+for i in range (0,n):
+   te=0
+   for i in range (0,len(x)):
+        h=ha(q0,q1,q2,q3,b,i)
         s=sigmoid(h)
         e=error(i,s)
-        ls[i][j]=loss(e)
-        dq0=deltaq0(i,s)
-        dq1=deltaq1(i,s)
-        dq2=deltaq2(i,s)
-        dq3=deltaq3(i,s)
-        db =deltab(i,s)
-        nq0=newq0(tq0,a,dq0)
-        nq1=newq1(tq1,a,dq1)
-        nq2=newq2(tq2,a,dq2)
-        nq3=newq3(tq3,a,dq3)
-        nb=newb(tb,a,db)
-        tq0=nq0;tq1=nq1;tq2=nq2;tq3=nq3;tb=nb
+        te+=e
+        dt0=deltaq0(i,s);dt1=deltaq1(i,s);dt2=deltaq2(i,s);dt3=deltaq3(i,s)
+        db=deltab(i,s)
+        q0=newq(q0,a,dt0);q1=newq(q1,a,dt1);q2=newq(q2,a,dt2);q3=newq(q3,a,dt3)
+        b=newb(b,a,db)
+   err.append(te/100.0)
         
-ls = np.asarray(ls)
-epoch = np.arange(0, n).reshape(1,n)
-data = np.arange(0,len(x)).reshape(1,len(x))
-l=ls[0][epoch]
-pl.plot(np.array(epoch.T),np.array(l.T))
+pl.plot(err)
+pl.legend(['Accuracy'], loc='upper right')
+pl.xlabel('Epoch')
+pl.ylabel('Error')
+pl.show()
